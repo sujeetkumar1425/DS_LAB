@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int info;
+    struct node *next;
+};
+
+struct node *start = NULL;
+
+struct node *create_node(int item) {
+    struct node *new_node = (struct node*)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+    new_node->info = item;
+    new_node->next = NULL;
+    return new_node;
+}
+
+void insert_end(int item) {
+    struct node *new_node = create_node(item);
+    if (start == NULL) {
+        start = new_node;
+    } else {
+        struct node *temp = start;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = new_node;
+    }
+}
+
+void search(int item) {
+    struct node *temp = start;
+    int flag = 0;
+    while (temp != NULL) {
+        if (temp->info == item) {
+            flag = 1;
+            break;
+        }
+        temp = temp->next;
+    }
+    if (flag == 1)
+        printf("found\n");
+    else
+        printf("not found\n");
+}
+
+int main() {
+    int n, item;
+    
+    printf("enter no. of list elements:\n");
+    scanf("%d", &n);
+    
+    printf("enter list items:");
+    while (n--) {
+        if (scanf("%d", &item) != 1) { 
+            printf("Invalid input. Exiting.\n");
+            return 1;
+        }
+        insert_end(item);
+    }
+    
+    printf("enter element to be searched:");
+    scanf("%d", &item);
+    
+    search(item);
+    
+    // Optional: Free the allocated memory before exiting (good practice)
+    struct node *current = start;
+    struct node *next_node;
+    while (current != NULL) {
+        next_node = current->next;
+        free(current);
+        current = next_node;
+    }
+    
+    return 0;
+}

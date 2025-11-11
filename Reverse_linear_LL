@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node* next;
+};
+
+
+struct node* head = NULL;
+
+
+struct node* create_node(int data)
+{
+    struct node* new_node = (struct node*) malloc (sizeof(struct node));
+    if (new_node == NULL)
+    {
+        printf("Memory can't be allocated for new node");
+        return NULL;
+    } 
+    else
+    {
+        new_node -> data = data;
+        new_node -> next = NULL;
+        return new_node;
+    }
+}
+
+
+void insert_begin(int data)
+{
+    struct node* new_node = create_node(data);
+    if (new_node != NULL)
+    {
+        new_node -> next = head;
+        head = new_node;
+    }
+}
+
+
+void reverse_list()
+{
+    if (head == NULL)
+    {
+        return;
+    }
+    struct node* temp = head;
+    struct node* new_head = NULL;
+
+    
+    while (temp != NULL)
+    {
+        struct node* new_node = create_node(temp->data); 
+        new_node->next = new_head;
+        new_head = new_node;
+        temp = temp->next;
+    }
+
+    
+    struct node* current = head;
+    struct node* next_node;
+    while(current != NULL) {
+        next_node = current->next;
+        free(current);
+        current = next_node;
+    }
+    
+    
+    head = new_head; 
+}
+
+
+void print()
+{
+    struct node* temp = head;
+    while (temp != NULL)
+    {
+        printf("%d --> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL \n");
+}
+
+int main()
+{
+    printf("enter number of elements in the list: ");
+    int n,i,item;
+    if (scanf("%d",&n) != 1) return 1;
+    
+    printf("\n enter list elements: ");
+    for(i=0; i<n; i++){ 
+        if (scanf("%d",&item) != 1) return 1;
+        insert_begin(item);
+    }
+    
+    printf("Linked List before reversed: \n");
+    print();
+    
+    reverse_list();
+    
+    printf("\nLinked List after reversed: \n");
+    print();
+    
+    return 0;
+}

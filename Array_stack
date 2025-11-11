@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+void push(int *stack, int *top, int max_size) {
+    if (*top == max_size - 1) {
+        printf("Stack Overflow\n");
+        return;
+    }
+    printf("enter element to be pushed-->");
+    int n;
+    scanf("%d", &n);
+
+    (*top)++;
+    stack[*top] = n;
+}
+
+void pop(int *stack, int *top) {
+    if (*top == -1) {
+        printf("Stack Underflow\n");
+        return;
+    } else {
+        int item = stack[*top];
+        (*top)--;
+        printf("item popped is :%d\n", item);
+    }
+}
+
+void display(int *stack, int *top) {
+    if ((*top) == -1) {
+        printf("Stack is empty\n");
+    } else {
+        printf("Stack elements (Top to Bottom):\n");
+        for (int i = (*top); i >= 0; i--) {
+            printf("%d\n", stack[i]);
+        }
+    }
+}
+
+int main() {
+    char ch = 'y';
+    int max_size;
+    
+    printf("enter maximum size of STACK:\n");
+    scanf("%d", &max_size);
+    int *stack = (int *)malloc(max_size * sizeof(int));
+    if (stack == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+    
+    int top = -1;
+    
+    while (ch == 'y' || ch == 'Y') {
+        printf("\nEnter your choice: PUSH-1, POP-2, DISPLAY-3 : ");
+        int choice;
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            push(stack, &top, max_size);
+        } else if (choice == 2) {
+            pop(stack, &top);
+        } else if (choice == 3) {
+            display(stack, &top);
+        } else {
+            printf("Invalid choice\n");
+        }
+
+        printf("Do you want to continue(y/n): ");
+        scanf(" %c", &ch); // Note the space before %c to consume newline
+    }
+    free(stack);
+    return 0;
+}

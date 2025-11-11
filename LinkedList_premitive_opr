@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int info;
+    struct node *next;
+};
+
+struct node *start = NULL;
+struct node *new_node;
+
+struct node *create_node(int item) {
+    new_node = (struct node*)malloc(sizeof(struct node));
+    new_node->info = item;
+    new_node->next = NULL;
+    return new_node;
+}
+
+void insert_beg(int item) {
+    new_node = create_node(item);
+    if (start == NULL) {
+        start = new_node;
+    } else {
+        new_node->next = start;
+        start = new_node;
+        printf("node is pushed\n");
+    }
+}
+
+void insert_end(int item) {
+    new_node = create_node(item);
+    if (start == NULL) {
+        start = new_node;
+    } else {
+        struct node *ptr;
+        ptr = start;
+        while (ptr->next != NULL) {
+            ptr = ptr->next;
+        }
+        ptr->next = new_node;
+        printf("node is inserted at the END\n");
+    }
+}
+
+void insert_pos(int item, int pos) {
+    int count = 1;
+    struct node *ptr;
+    
+    if (pos == 1) { 
+        insert_beg(item);
+        return;
+    }
+
+    new_node = create_node(item);
+    ptr = start;
+
+    while (ptr != NULL && count < pos - 1) { 
+        ptr = ptr->next;
+        count++;
+    }
+
+    if (ptr == NULL && pos > 1) {
+        printf("Invalid position\n");
+        free(new_node); 
+    } else {
+        new_node->next = ptr->next;
+        ptr->next = new_node;
+        printf("node is inserted at the specified position\n");
+    }
+}
+
+void delete_beg() {
+    if (start == NULL) {
+        printf("list is empty\n");
+    } else {
+        struct node *temp;
+        temp = start;
+        start = start->next;
+        free(temp);
+        printf("node deleted from the beginning\n");
+    }
+}
+
+void delete_end() {
+    if (start == NULL) {
+        printf("List is empty\n");
+    } else if (start->next == NULL) {
+        free(start);
+        start = NULL;
+        printf("node deleted from end\n");
+    } else {
+        struct node *temp;
+        temp = start;
+        while (temp->next->next != NULL) {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = NULL;
+        printf("node deleted from end\n");
+    }
+}
+
+void delete_pos(int pos) {
+    struct node *temp;
+    struct node *prev;
+    int count = 1;
+
+    if (start == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    if (pos == 1) { 
+        temp = start;
+        start = start->next;
+        free(temp);
+        printf("node deleted from position %d\n", pos);
+        return;
+    }
+
+    temp = start;
+    prev = NULL;

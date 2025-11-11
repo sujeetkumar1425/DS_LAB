@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int arr[100];
+    int n, pos, value;
+    int i; // Declare loop variable outside for standard C
+
+    printf("Enter number of elements: ");
+    if (scanf("%d", &n) != 1 || n < 0 || n > 100) {
+        printf("Invalid number of elements.\n");
+        return 1;
+    }
+
+    printf("Enter array elements: ");
+    for(i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+
+    printf("Enter position to insert (0-based index): ");
+    scanf("%d", &pos);
+
+    printf("Enter value to insert: ");
+    scanf("%d", &value);
+
+    // Check for valid position and array capacity
+    if(pos < 0 || pos > n || n >= 100) {
+        printf("Invalid position or array is full!\n");
+        return 1;
+    }
+
+    // Shift elements to the right to make space
+    for(i = n; i > pos; i--)
+        arr[i] = arr[i-1];
+
+    // Insert the new value
+    arr[pos] = value;
+    n++; // Increment the size of the array
+
+    printf("Array after insertion: ");
+    for(i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+
+    return 0;
+}

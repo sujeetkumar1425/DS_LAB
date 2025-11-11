@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *head = NULL;
+
+void insert(int value) {
+    // Allocate memory using malloc, cast to struct node*
+    struct node *newNode = (struct node*)malloc(sizeof(struct node)); 
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = head;
+    head = newNode;
+}
+
+int countNodes() {
+    int count = 0;
+    struct node *temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+int main() {
+    int n, value;
+    int i; // Declared loop variable for standard C
+
+    printf("Enter the number of elements to insert: ");
+    scanf("%d", &n);
+    
+    if (n < 0) {
+        printf("Invalid number of elements.\n");
+        return 1;
+    }
+
+    printf("Enter node values: ");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &value);
+        insert(value);
+    }
+    
+    printf("Total nodes in list = %d\n", countNodes());
+
+    // Good practice: Free allocated memory
+    struct node *current = head;
+    struct node *next_node;
+    while (current != NULL) {
+        next_node = current->next;
+        free(current);
+        current = next_node;
+    }
+
+    return 0;
+}

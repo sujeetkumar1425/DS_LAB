@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *head = NULL;
+
+void insert(int value) {
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    if (!newNode) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = head;
+    head = newNode;
+}
+
+int countNodes() {
+    int count = 0;
+    struct node *temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+void display() {
+    struct node *temp = head;
+    if (!temp) {
+        printf("List is empty.\n");
+        return;
+    }
+    printf("Linked list: ");
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    int n, value, choice, i;
+    printf("Enter the initial number of elements to insert: ");
+    scanf("%d", &n);
+    printf("Enter node values ");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &value);
+        insert(value);
+    }
+
+    do {
+        printf("\nMenu:\n");
+        printf("1. Insert new node\n");
+        printf("2. Count nodes\n");
+        printf("3. Display list\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                insert(value);
+                printf("Inserted.\n");
+                break;
+            case 2:
+                printf("Total nodes in list = %d\n", countNodes());
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                // Note: Good practice requires freeing all nodes here.
+                printf("Exiting.\n");
+                break;
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    } while(choice != 4);
+
+    return 0;
+}
